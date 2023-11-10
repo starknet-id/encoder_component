@@ -3,7 +3,7 @@ use core::array::ArrayTrait;
 use starknet::testing;
 use debug::PrintTrait;
 
-use encoder::main::encoder_component::{InternalImpl, component_state_for_testing};
+use encoder::main::encoder_component::{EncoderImpl, component_state_for_testing};
 
 #[starknet::contract]
 mod DummyContract {
@@ -12,7 +12,7 @@ mod DummyContract {
 
     component!(path: encoder_component, storage: encoder_storage, event: EncoderEvent);
 
-    impl EncoderComponent = encoder_component::InternalImpl<ContractState>;
+    impl EncoderComponent = encoder_component::EncoderImpl<ContractState>;
 
     #[storage]
     struct Storage {

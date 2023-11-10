@@ -1,4 +1,4 @@
 #[starknet::interface]
-trait IInternalEncoderComponent<TComponentState> {
+trait IEncoder<TComponentState> {
     fn encode(self: @TComponentState, domain: (felt252, felt252)) -> felt252;
 }

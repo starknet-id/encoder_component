@@ -6,7 +6,7 @@ mod encoder_component {
     use core::array::SpanTrait;
     use core::option::OptionTrait;
 
-    use encoder::interface::IInternalEncoderComponent;
+    use encoder::interface::IEncoder;
 
     #[storage]
     struct Storage {}
@@ -15,8 +15,11 @@ mod encoder_component {
     #[derive(Drop, starknet::Event)]
     enum Event {}
 
-    impl InternalImpl<T, +HasComponent<T>> of IInternalEncoderComponent<ComponentState<T>> {
-        fn encode(self: @ComponentState<T>, domain: (felt252, felt252)) -> felt252 {
+    #[embeddable_as(Encoder)]
+    impl EncoderImpl<
+        TContractState, +HasComponent<TContractState>
+    > of IEncoder<ComponentState<TContractState>> {
+        fn encode(self: @ComponentState<TContractState>, domain: (felt252, felt252)) -> felt252 {
             let mut domain_array = preprocess(domain);
 
             let mut mul = 1;
