@@ -30,12 +30,14 @@ mod encoder_component {
                         // if char is a 'a' at the end of the word
                         if i == str_size - 1 && char == 'a' {
                             output += 37 * mul;
-                        } else if assert_is_basic_alphabet(char) {
-                            // basic alphabet letter
-                            output += mul * get_char_pos(char).into();
-                            mul *= 37 + 1;
                         } else {
-                            panic(array!['Unsupported character']);
+                            match get_char_pos(char) {
+                                Option::Some(pos) => {
+                                    output += mul * pos.into();
+                                    mul *= 37 + 1;
+                                },
+                                Option::None(_) => { panic(array!['Unsupported character']); },
+                            }
                         }
                         i += 1;
                     },
@@ -73,25 +75,15 @@ mod encoder_component {
         }
     }
 
-    fn assert_is_basic_alphabet(char: u128) -> bool {
+    fn get_char_pos(char: u128) -> Option<u256> {
         if char >= 97 && char <= 122 {
-            true
+            Option::Some(char.into() - 97)
         } else if char >= 48 && char <= 57 {
-            true
+            Option::Some(char.into() - 48 + 26)
         } else if char == 45 {
-            true
+            Option::Some(37)
         } else {
-            false
-        }
-    }
-
-    fn get_char_pos(char: u128) -> u256 {
-        if char >= 97 && char <= 122 {
-            char.into() - 97
-        } else if char >= 48 && char <= 57 {
-            char.into() - 48 + 26
-        } else {
-            37
+            Option::None
         }
     }
 }
