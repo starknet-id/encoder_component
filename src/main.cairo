@@ -6,7 +6,7 @@ mod encoder_component {
     use core::array::SpanTrait;
     use core::option::OptionTrait;
 
-    use encoder_component::interface::IInternalEncoderComponent;
+    use encoder::interface::IInternalEncoderComponent;
 
     #[storage]
     struct Storage {}

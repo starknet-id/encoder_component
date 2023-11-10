@@ -1,5 +1,5 @@
 [package]
-name = "encoder_component"
+name = "encoder"
 version = "0.1.0"
 
 [dependencies]
