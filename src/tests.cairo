@@ -39,7 +39,7 @@ impl TestingStateDefault of Default<TestingState> {
 fn test_encode() {
     let mut encoder_component: TestingState = Default::default();
 
-    let domain = ('iris', '');
+    let domain = ('iris', '', '');
     let encoded_domain = encoder_component.encode(domain);
     assert(encoded_domain == 999902, 'Error while encoding domain');
 }
@@ -49,7 +49,7 @@ fn test_encode() {
 fn test_encode_long_domain() {
     let mut encoder_component: TestingState = Default::default();
 
-    let domain = ('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', '');
+    let domain = ('aaaaaaaaaaaaaaaa', 'aaaaaaaaaaaaaaa', '');
     let mut encoded_domain = encoder_component.encode(domain);
     encoded_domain.print();
     assert(
@@ -58,42 +58,17 @@ fn test_encode_long_domain() {
     );
 
     // 47 a
-    let domain = ('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'aaaaaaaaaaaaaaaa');
+    let domain = ('aaaaaaaaaaaaaaaa', 'aaaaaaaaaaaaaaaa', 'aaaaaaaaaaaaaaa');
     let encoded_domain = encoder_component.encode(domain);
     assert(
         encoded_domain == 173080112351456268124053801378276551092162672915177425369094246922356523008,
         'Error while encoding domain'
     );
 
-    let domain = ('012345678901234567890', '012345678901234567890');
+    let domain = ('0123456789012345', '6789001234567890', '1234567890');
     let encoded_domain = encoder_component.encode(domain);
     assert(
         encoded_domain == 1590776337696498851524821521508998826074315224802694556884844578564,
         'Error while encoding domain'
     );
 }
-
-#[test]
-#[available_gas(20000000000)]
-#[should_panic(expected: ('u256_mul Overflow',))]
-fn test_encode_domain_too_long_a() {
-    let mut encoder_component: TestingState = Default::default();
-
-    let domain = ('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'aaaaaaaaaaaaaaaaaaaa');
-    let encoded_domain = encoder_component.encode(domain);
-}
-
-#[test]
-#[available_gas(20000000000)]
-#[should_panic(expected: ('u256_mul Overflow',))]
-fn test_encode_domain_too_long() {
-    let mut encoder_component: TestingState = Default::default();
-
-    let domain = ('abcdefghijklmnopqrstuvwxyz0123', '456789zzzzzzzzabcdefghijklmnopq');
-    let encoded_domain = encoder_component.encode(domain);
-    assert(
-        encoded_domain == 1216349639048540156641035392462478004047160192551651663698877657275019336587,
-        'Error while encoding domain'
-    );
-}
-

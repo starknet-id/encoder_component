@@ -19,7 +19,7 @@ mod encoder_component {
     impl EncoderImpl<
         TContractState, +HasComponent<TContractState>
     > of IEncoder<ComponentState<TContractState>> {
-        fn encode(self: @ComponentState<TContractState>, domain: (felt252, felt252)) -> felt252 {
+        fn encode(self: @ComponentState<TContractState>, domain: (u128, u128, u128)) -> felt252 {
             let mut domain_array = preprocess(domain);
 
             let mut mul = 1;
@@ -51,18 +51,14 @@ mod encoder_component {
         }
     }
 
-    fn preprocess(program: (felt252, felt252)) -> Array<u128> {
+    fn preprocess(program: (u128, u128, u128)) -> Array<u128> {
         let mut arr = Default::default();
 
-        let (domain_1, domain_2) = program;
+        let (domain_1, domain_2, domain_3) = program;
 
-        let u256{low, high } = domain_1.into();
-        rec_add_chars(ref arr, 15, high);
-        rec_add_chars(ref arr, 16, low);
-
-        let u256{low, high } = domain_2.into();
-        rec_add_chars(ref arr, 15, high);
-        rec_add_chars(ref arr, 16, low);
+        rec_add_chars(ref arr, 16, domain_1);
+        rec_add_chars(ref arr, 16, domain_2);
+        rec_add_chars(ref arr, 16, domain_3);
 
         return arr;
     }
